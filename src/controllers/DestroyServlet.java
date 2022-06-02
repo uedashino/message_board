@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.Message;
 import utils.DBUtil;
 
+
 /**
  * Servlet implementation class DestroyServlet
  */
@@ -24,6 +25,7 @@ public class DestroyServlet extends HttpServlet {
      */
     public DestroyServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -34,21 +36,22 @@ public class DestroyServlet extends HttpServlet {
         if(_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
-            // セッションスコープからメッセージのIDを取得して
-            // 該当のIDのメッセージ1件のみをデータベースから取得
+            //セッションスコープからメッセージのIDを取得して
+            //該当のIDのメッセージ1件のみをデータベースから取得
             Message m = em.find(Message.class, (Integer)(request.getSession().getAttribute("message_id")));
 
             em.getTransaction().begin();
-            em.remove(m);       // データ削除
+            em.remove(m); //データの削除
             em.getTransaction().commit();
+            request.getSession().setAttribute("flush", "削除が完了しました。");
             em.close();
 
-            // セッションスコープ上の不要になったデータを削除
+            //セッションスコープ上の不要になったデータを削除
             request.getSession().removeAttribute("message_id");
 
-            // indexページへリダイレクト
+            //indexページへリダイレクト
             response.sendRedirect(request.getContextPath() + "/index");
         }
     }
-}
 
+}

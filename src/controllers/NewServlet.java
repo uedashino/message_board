@@ -23,6 +23,7 @@ public class NewServlet extends HttpServlet {
      */
     public NewServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -39,4 +40,3 @@ public class NewServlet extends HttpServlet {
         rd.forward(request, response);
      }
 }
-

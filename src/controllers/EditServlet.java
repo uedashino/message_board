@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +25,7 @@ public class EditServlet extends HttpServlet {
      */
     public EditServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -32,20 +34,23 @@ public class EditServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = DBUtil.createEntityManager();
 
-        // 該当のIDのメッセージ1件のみをデータベースから取得
+        //該当のIDノメッセージ1件のみをデータベースから取得
         Message m = em.find(Message.class, Integer.parseInt(request.getParameter("id")));
 
         em.close();
 
-        // メッセージ情報とセッションIDをリクエストスコープに登録
+        //メッセージ情報とセッションIDをリクエストスコープに登録
         request.setAttribute("message", m);
         request.setAttribute("_token", request.getSession().getId());
 
-        // メッセージデータが存在しているときのみ
+     // メッセージデータが存在しているときのみ
         // メッセージIDをセッションスコープに登録
         if(m != null) {
             request.getSession().setAttribute("message_id", m.getId());
         }
 
-}
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/messages/edit.jsp");
+        rd.forward(request, response);
+    }
+
 }
